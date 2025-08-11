@@ -75,21 +75,51 @@ export default function StepTwoPage() {
 
     try {
       const supabase = getSupabase();
-      // Upsert by unique constraint (entry_date unique for anon)
-      const { data: upserted, error: upsertError } = await supabase
+      // Manual upsert to avoid ON CONFLICT requirement on partial unique index
+      const { data: existing, error: selectErr } = await supabase
         .from("daily_entries")
-        .upsert(payload, { onConflict: "entry_date" })
         .select("id, entry_date")
-        .single();
+        .eq("entry_date", entryDate)
+        .is("user_id", null)
+        .maybeSingle();
 
-      if (upsertError) {
-        setError(upsertError.message);
+      if (selectErr) {
+        setError(selectErr.message);
         setSubmitting(false);
         return;
       }
 
+      let targetDate = entryDate;
+      if (existing?.id) {
+        const { data: updated, error: updateErr } = await supabase
+          .from("daily_entries")
+          .update(payload)
+          .eq("entry_date", entryDate)
+          .is("user_id", null)
+          .select("id, entry_date")
+          .single();
+        if (updateErr) {
+          setError(updateErr.message);
+          setSubmitting(false);
+          return;
+        }
+        targetDate = updated?.entry_date ?? entryDate;
+      } else {
+        const { data: inserted, error: insertErr } = await supabase
+          .from("daily_entries")
+          .insert(payload)
+          .select("id, entry_date")
+          .single();
+        if (insertErr) {
+          setError(insertErr.message);
+          setSubmitting(false);
+          return;
+        }
+        targetDate = inserted?.entry_date ?? entryDate;
+      }
+
       clearStepOne();
-      const target = upserted?.entry_date ?? entryDate;
+      const target = targetDate;
       router.push(`/history/${target}`);
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다.";
