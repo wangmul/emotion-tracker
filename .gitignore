@@ -15,4 +15,4 @@ node_modules/
 .supabase/
 
 # Lockfiles
-web/package-lock.json
+# (CI에서 npm ci 사용을 위해 웹 lockfile은 포함)
