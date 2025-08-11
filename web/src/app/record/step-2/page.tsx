@@ -26,7 +26,7 @@ export const dynamic = "force-dynamic";
 
 export default function StepTwoPage() {
   const router = useRouter();
-  const { loading } = useRequireAuth();
+  const { userId, loading } = useRequireAuth();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -65,7 +65,7 @@ export default function StepTwoPage() {
           .from("daily_entries")
           .select("must_do_tasks, wanted_but_skipped_tasks")
           .eq("entry_date", entryDate)
-          .is("user_id", null)
+          .eq("user_id", userId ?? "")
           .maybeSingle();
         if (data) {
           const v = data as Pick<DailyEntry, "must_do_tasks" | "wanted_but_skipped_tasks">;
@@ -82,7 +82,7 @@ export default function StepTwoPage() {
         // ignore
       }
     })();
-  }, [setValue]);
+  }, [setValue, userId]);
 
   const onSubmit = async (data: FormData) => {
     const stepOne = loadStepOne();
@@ -116,7 +116,7 @@ export default function StepTwoPage() {
         .from("daily_entries")
         .select("id, entry_date")
         .eq("entry_date", entryDate)
-        .is("user_id", null)
+        .eq("user_id", userId ?? "")
         .maybeSingle();
 
       if (selectErr) {
@@ -131,7 +131,7 @@ export default function StepTwoPage() {
           .from("daily_entries")
           .update(payload)
           .eq("entry_date", entryDate)
-          .is("user_id", null)
+          .eq("user_id", userId ?? "")
           .select("id, entry_date")
           .single();
         if (updateErr) {
@@ -143,7 +143,7 @@ export default function StepTwoPage() {
       } else {
         const { data: inserted, error: insertErr } = await supabase
           .from("daily_entries")
-          .insert(payload)
+          .insert({ ...payload, user_id: userId ?? undefined })
           .select("id, entry_date")
           .single();
         if (insertErr) {

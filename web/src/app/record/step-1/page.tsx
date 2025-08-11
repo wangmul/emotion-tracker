@@ -25,7 +25,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function StepOnePage() {
   const router = useRouter();
-  const { loading } = useRequireAuth();
+  const { userId, loading } = useRequireAuth();
   const {
     register,
     handleSubmit,
@@ -61,6 +61,7 @@ export default function StepOnePage() {
           .from("daily_entries")
           .select("said_no_count, asked_help_count, chose_for_joy_count, took_rest, did_cook, did_exercise")
           .eq("entry_date", selectedDate)
+          .eq("user_id", userId ?? "")
           .maybeSingle();
         if (data) {
           const v = data as {
@@ -99,7 +100,7 @@ export default function StepOnePage() {
         // ignore
       }
     })();
-  }, [selectedDate, setValue]);
+  }, [selectedDate, setValue, userId]);
 
   if (loading) return null;
   return (
