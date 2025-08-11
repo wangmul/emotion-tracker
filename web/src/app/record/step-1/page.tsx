@@ -167,7 +167,7 @@ export default function StepOnePage() {
               </label>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 pt-6">
               <input
                 id="didCook"
                 type="checkbox"
@@ -179,7 +179,7 @@ export default function StepOnePage() {
               </label>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 pt-6">
               <input
                 id="didExercise"
                 type="checkbox"
