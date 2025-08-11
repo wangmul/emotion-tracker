@@ -86,6 +86,17 @@ export default function HistoryByDatePage() {
               </div>
             </div>
 
+            <div className="text-sm grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="rounded-2xl bg-white/70 dark:bg-white/10 p-4 border border-black/10 dark:border-white/15">
+                <p className="text-xs opacity-70">요리</p>
+                <p className="text-xl font-semibold">{entry.did_cook ? "O" : "X"}</p>
+              </div>
+              <div className="rounded-2xl bg-white/70 dark:bg-white/10 p-4 border border-black/10 dark:border-white/15">
+                <p className="text-xs opacity-70">운동</p>
+                <p className="text-xl font-semibold">{entry.did_exercise ? "O" : "X"}</p>
+              </div>
+            </div>
+
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-white/15 bg-white/70 p-5 dark:bg-white/10">
                 <p className="font-medium mb-2">해야 하지만 하기 싫은 일</p>

@@ -65,6 +65,8 @@ export default function StepTwoPage() {
       asked_help_count: stepOne.askedHelpCount,
       chose_for_joy_count: stepOne.choseForJoyCount,
       took_rest: stepOne.tookRest,
+      did_cook: Boolean(stepOne.didCook),
+      did_exercise: Boolean(stepOne.didExercise),
       must_do_tasks: [data.mustDo0 ?? "", data.mustDo1 ?? "", data.mustDo2 ?? ""],
       wanted_but_skipped_tasks: [
         data.wantSkip0 ?? "",

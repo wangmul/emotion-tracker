@@ -97,6 +97,9 @@ export default function HistoryPage() {
               <p>아니라고 말 함: <b>{e.said_no_count}</b></p>
               <p>도움을 요청함: <b>{e.asked_help_count}</b></p>
               <p>즐거움을 위해 선택함: <b>{e.chose_for_joy_count}</b></p>
+              <p>휴식: <b>{e.took_rest ? "O" : "X"}</b></p>
+              <p>요리: <b>{e.did_cook ? "O" : "X"}</b></p>
+              <p>운동: <b>{e.did_exercise ? "O" : "X"}</b></p>
             </div>
             <div className="mt-3 grid grid-cols-2 gap-3 text-sm">
               <div>

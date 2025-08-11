@@ -15,6 +15,8 @@ const schema = z.object({
   choseForJoyCount: z.number().int().min(0),
   tookRest: z.boolean(),
   selectedDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  didCook: z.boolean().default(false),
+  didExercise: z.boolean().default(false),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -35,6 +37,8 @@ export default function StepOnePage() {
       choseForJoyCount: 0,
       tookRest: false,
       selectedDate: format(new Date(), "yyyy-MM-dd"),
+      didCook: false,
+      didExercise: false,
     },
   });
 
@@ -52,7 +56,7 @@ export default function StepOnePage() {
         const supabase = getSupabase();
         const { data } = await supabase
           .from("daily_entries")
-          .select("said_no_count, asked_help_count, chose_for_joy_count, took_rest")
+          .select("said_no_count, asked_help_count, chose_for_joy_count, took_rest, did_cook, did_exercise")
           .eq("entry_date", selectedDate)
           .maybeSingle();
         if (data) {
@@ -61,12 +65,16 @@ export default function StepOnePage() {
             asked_help_count: number;
             chose_for_joy_count: number;
             took_rest: boolean;
+            did_cook: boolean;
+            did_exercise: boolean;
           };
           const filled: FormData = {
             saidNoCount: v.said_no_count,
             askedHelpCount: v.asked_help_count,
             choseForJoyCount: v.chose_for_joy_count,
             tookRest: v.took_rest,
+            didCook: v.did_cook,
+            didExercise: v.did_exercise,
             selectedDate,
           };
           Object.entries(filled).forEach(([k, val]) => setValue(k as keyof FormData, val as never));
@@ -77,6 +85,8 @@ export default function StepOnePage() {
             askedHelpCount: 0,
             choseForJoyCount: 0,
             tookRest: false,
+            didCook: false,
+            didExercise: false,
             selectedDate,
           };
           Object.entries(cleared).forEach(([k, val]) => setValue(k as keyof FormData, val as never));
@@ -154,6 +164,30 @@ export default function StepOnePage() {
               />
               <label htmlFor="tookRest" className="text-sm font-medium">
                 휴식을 취했나요?
+              </label>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <input
+                id="didCook"
+                type="checkbox"
+                className="h-5 w-5 rounded border border-black/20 accent-black dark:border-white/20 focus:ring-2 focus:ring-[#94a3b8]/30"
+                {...register("didCook")}
+              />
+              <label htmlFor="didCook" className="text-sm font-medium">
+                요리를 했나요?
+              </label>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <input
+                id="didExercise"
+                type="checkbox"
+                className="h-5 w-5 rounded border border-black/20 accent-black dark:border-white/20 focus:ring-2 focus:ring-[#94a3b8]/30"
+                {...register("didExercise")}
+              />
+              <label htmlFor="didExercise" className="text-sm font-medium">
+                운동을 했나요?
               </label>
             </div>
           </div>
