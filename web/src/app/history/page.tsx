@@ -63,7 +63,7 @@ export default function HistoryPage() {
 
   return (
     <main className="mx-auto max-w-4xl px-6 py-10 space-y-8">
-      <div className="rounded-3xl border border-white/15 bg-white/60 p-6 shadow-2xl backdrop-blur-md dark:bg-white/5">
+      <div className="rounded-3xl border border-white/15 bg-white/60 p-6 shadow-xl backdrop-blur-md dark:bg-white/5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-xl font-semibold">날짜별 보기</h2>
           <form action={(formData) => {
@@ -75,7 +75,7 @@ export default function HistoryPage() {
           </form>
         </div>
       </div>
-      <div className="rounded-3xl border border-white/15 bg-white/60 p-6 shadow-2xl backdrop-blur-md dark:bg-white/5">
+      <div className="rounded-3xl border border-white/15 bg-white/60 p-6 shadow-xl backdrop-blur-md dark:bg-white/5">
         <h1 className="text-2xl font-semibold mb-4">히스토리</h1>
         {entries.length > 0 ? (
           <Line data={chartData} options={{ responsive: true, plugins: { legend: { display: true } } }} />
