@@ -43,8 +43,9 @@ export default function StepOnePage() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
-              <label className="block text-sm font-medium mb-2">아니라고 말 한 횟수</label>
+              <label htmlFor="saidNoCount" className="block text-sm font-medium mb-2">아니라고 말 한 횟수</label>
               <input
+                id="saidNoCount"
                 type="number"
                 inputMode="numeric"
                 min={0}
@@ -56,8 +57,9 @@ export default function StepOnePage() {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">도움을 요청한 횟수</label>
+              <label htmlFor="askedHelpCount" className="block text-sm font-medium mb-2">도움을 요청한 횟수</label>
               <input
+                id="askedHelpCount"
                 type="number"
                 inputMode="numeric"
                 min={0}
@@ -69,8 +71,9 @@ export default function StepOnePage() {
               )}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">즐거움을 위해 선택한 횟수</label>
+              <label htmlFor="choseForJoyCount" className="block text-sm font-medium mb-2">즐거움을 위해 선택한 횟수</label>
               <input
+                id="choseForJoyCount"
                 type="number"
                 inputMode="numeric"
                 min={0}
