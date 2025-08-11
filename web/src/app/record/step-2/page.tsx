@@ -123,6 +123,13 @@ export default function StepTwoPage() {
           <div className="flex gap-3">
             <button
               type="button"
+              onClick={() => router.push("/")}
+              className="flex-1 rounded-xl border border-black/10 px-6 py-3 font-medium hover:bg-black/[.04] active:scale-[0.99] dark:border-white/15 dark:hover:bg-white/10"
+            >
+              홈으로
+            </button>
+            <button
+              type="button"
               onClick={() => router.push("/record/step-1")}
               className="flex-1 rounded-xl border border-black/10 px-6 py-3 font-medium hover:bg-black/[.04] active:scale-[0.99] dark:border-white/15 dark:hover:bg-white/10"
             >
