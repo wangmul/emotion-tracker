@@ -22,6 +22,11 @@ create table if not exists public.daily_entries (
 create unique index if not exists daily_entries_user_day_uniq
   on public.daily_entries (user_id, entry_date);
 
+-- Ensure single entry per day for anonymous (user_id is null)
+create unique index if not exists daily_entries_day_unique_public
+  on public.daily_entries (entry_date)
+  where user_id is null;
+
 -- updated_at trigger
 create or replace function public.set_updated_at()
 returns trigger language plpgsql as $$
@@ -129,6 +134,21 @@ begin
       on public.daily_entries for delete
       to anon
       using (user_id is null);
+  end if;
+end$$;
+
+-- Update for anonymous null user rows
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'daily_entries' and policyname = 'daily_entries_update_public_null_user'
+  ) then
+    create policy "daily_entries_update_public_null_user"
+      on public.daily_entries for update
+      to anon
+      using (user_id is null)
+      with check (user_id is null);
   end if;
 end$$;
 

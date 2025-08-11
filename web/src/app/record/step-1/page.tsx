@@ -1,10 +1,13 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { saveStepOne } from "@/lib/storage";
+import { getSupabase } from "@/lib/supabase/client";
+import { format } from "date-fns";
 
 const schema = z.object({
   saidNoCount: z.number().int().min(0),
@@ -35,6 +38,40 @@ export default function StepOnePage() {
     saveStepOne(data);
     router.push("/record/step-2");
   };
+
+  useEffect(() => {
+    // Prefill with today's existing entry if present
+    (async () => {
+      try {
+        const supabase = getSupabase();
+        const today = format(new Date(), "yyyy-MM-dd");
+        const { data } = await supabase
+          .from("daily_entries")
+          .select("said_no_count, asked_help_count, chose_for_joy_count, took_rest")
+          .eq("entry_date", today)
+          .maybeSingle();
+        if (data) {
+          const v = data as {
+            said_no_count: number;
+            asked_help_count: number;
+            chose_for_joy_count: number;
+            took_rest: boolean;
+          };
+          // Apply to form and session
+          const filled: FormData = {
+            saidNoCount: v.said_no_count,
+            askedHelpCount: v.asked_help_count,
+            choseForJoyCount: v.chose_for_joy_count,
+            tookRest: v.took_rest,
+          };
+          Object.entries(filled).forEach(([k, val]) => setValue(k as keyof FormData, val as never));
+          saveStepOne(filled);
+        }
+      } catch {
+        // ignore
+      }
+    })();
+  }, [setValue]);
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-12">

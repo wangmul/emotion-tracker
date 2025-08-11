@@ -74,20 +74,21 @@ export default function StepTwoPage() {
 
     try {
       const supabase = getSupabase();
-      const { data: inserted, error: insertError } = await supabase
+      // Upsert by unique constraint (entry_date unique for anon)
+      const { data: upserted, error: upsertError } = await supabase
         .from("daily_entries")
-        .insert(payload)
+        .upsert(payload, { onConflict: "entry_date" })
         .select("id, entry_date")
         .single();
 
-      if (insertError) {
-        setError(insertError.message);
+      if (upsertError) {
+        setError(upsertError.message);
         setSubmitting(false);
         return;
       }
 
       clearStepOne();
-      const target = inserted?.entry_date ?? today;
+      const target = upserted?.entry_date ?? today;
       router.push(`/history/${target}`);
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다.";
