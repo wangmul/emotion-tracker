@@ -28,6 +28,68 @@ alter table if exists public.daily_entries
 alter table if exists public.daily_entries
   add column if not exists self_soothing_methods text;
 
+-- Accumulated self-soothing methods (date-agnostic)
+create table if not exists public.self_soothing_methods (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade,
+  content text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.self_soothing_methods enable row level security;
+
+-- RLS for authenticated own rows
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'self_soothing_methods' and policyname = 'ssm_select_own'
+  ) then
+    create policy "ssm_select_own"
+      on public.self_soothing_methods for select
+      using (auth.uid() is not null and user_id = auth.uid());
+  end if;
+end$$;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'self_soothing_methods' and policyname = 'ssm_insert_own'
+  ) then
+    create policy "ssm_insert_own"
+      on public.self_soothing_methods for insert
+      with check (auth.uid() is not null and user_id = auth.uid());
+  end if;
+end$$;
+
+-- Public anon access (v1): allow select/insert when user_id is null
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'self_soothing_methods' and policyname = 'ssm_select_public_null_user'
+  ) then
+    create policy "ssm_select_public_null_user"
+      on public.self_soothing_methods for select
+      to anon
+      using (user_id is null);
+  end if;
+end$$;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_policies
+    where schemaname = 'public' and tablename = 'self_soothing_methods' and policyname = 'ssm_insert_public_null_user'
+  ) then
+    create policy "ssm_insert_public_null_user"
+      on public.self_soothing_methods for insert
+      to anon
+      with check (user_id is null);
+  end if;
+end$$;
+
 -- Unique per user per day (null user_id allows duplicates, OK for single-user v1)
 create unique index if not exists daily_entries_user_day_uniq
   on public.daily_entries (user_id, entry_date);

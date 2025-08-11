@@ -55,9 +55,23 @@ export default function StepThreePage() {
 
     try {
       const supabase = getSupabase();
+      // 1) 날짜 무관 누적 테이블에 추가(비어있으면 스킵)
+      const trimmed = (data.methods ?? "").trim();
+      if (trimmed.length > 0) {
+        const { error: insertErr } = await supabase
+          .from("self_soothing_methods")
+          .insert({ content: trimmed });
+        if (insertErr) {
+          setError(insertErr.message);
+          setSubmitting(false);
+          return;
+        }
+      }
+
+      // 2) 해당 날짜 레코드에도 마지막 메모로 동기화(선택 사항이지만 유지)
       const { error: updateErr } = await supabase
         .from("daily_entries")
-        .update({ self_soothing_methods: data.methods ?? "" })
+        .update({ self_soothing_methods: trimmed })
         .eq("entry_date", entryDate)
         .is("user_id", null);
       if (updateErr) {

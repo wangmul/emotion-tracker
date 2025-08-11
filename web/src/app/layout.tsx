@@ -47,6 +47,7 @@ export default function RootLayout({
               <nav className="flex items-center gap-2 sm:gap-3 text-sm">
                 <Link href="/record/step-1" className="rounded-md px-3 py-1.5 hover:bg-black/[.04] active:scale-[0.99] dark:hover:bg-white/10">기록하기</Link>
                 <Link href="/history" className="rounded-md px-3 py-1.5 hover:bg-black/[.04] active:scale-[0.99] dark:hover:bg-white/10">히스토리</Link>
+                <Link href="/soothing" className="rounded-md px-3 py-1.5 hover:bg-black/[.04] active:scale-[0.99] dark:hover:bg-white/10">달래기 모음</Link>
               </nav>
             </div>
           </header>
