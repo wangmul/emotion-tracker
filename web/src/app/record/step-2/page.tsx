@@ -9,6 +9,7 @@ import { loadStepOne } from "@/lib/storage";
 import { getSupabase } from "@/lib/supabase/client";
 import type { DailyEntry } from "@/types/dailyEntry";
 import { format } from "date-fns";
+import { useRequireAuth } from "@/lib/auth";
 
 const schema = z.object({
   mustDo0: z.string().trim(),
@@ -25,6 +26,7 @@ export const dynamic = "force-dynamic";
 
 export default function StepTwoPage() {
   const router = useRouter();
+  const { loading } = useRequireAuth();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -161,6 +163,7 @@ export default function StepTwoPage() {
     }
   };
 
+  if (loading) return null;
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="rounded-3xl border border-white/15 bg-white/60 shadow-xl backdrop-blur-md dark:bg-white/5 p-8">

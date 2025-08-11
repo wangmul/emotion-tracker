@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useRequireAuth } from "@/lib/auth";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -24,6 +25,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function StepOnePage() {
   const router = useRouter();
+  const { loading } = useRequireAuth();
   const {
     register,
     handleSubmit,
@@ -99,6 +101,7 @@ export default function StepOnePage() {
     })();
   }, [selectedDate, setValue]);
 
+  if (loading) return null;
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="rounded-3xl border border-white/15 bg-white/60 shadow-xl backdrop-blur-md dark:bg-white/5 p-8">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono, Noto_Sans_KR } from "next/font/google";
+import AuthListener from "@/components/auth/AuthListener";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -52,6 +53,7 @@ export default function RootLayout({
             </div>
           </header>
           {children}
+          <AuthListener />
         </div>
       </body>
     </html>

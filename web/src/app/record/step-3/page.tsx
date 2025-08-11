@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loadStepOne, clearStepOne } from "@/lib/storage";
 import { getSupabase } from "@/lib/supabase/client";
 import { format } from "date-fns";
+import { useRequireAuth } from "@/lib/auth";
 
 const schema = z.object({
   methods: z.string().trim().max(1000).optional().default(""),
@@ -17,6 +18,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function StepThreePage() {
   const router = useRouter();
+  const { loading } = useRequireAuth();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -88,6 +90,7 @@ export default function StepThreePage() {
     }
   };
 
+  if (loading) return null;
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="rounded-3xl border border-white/15 bg-white/60 shadow-xl backdrop-blur-md dark:bg-white/5 p-8">
