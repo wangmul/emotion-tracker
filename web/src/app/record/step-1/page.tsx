@@ -99,11 +99,11 @@ export default function StepOnePage() {
   }, [selectedDate, setValue]);
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12">
+    <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="rounded-3xl border border-white/15 bg-white/60 shadow-xl backdrop-blur-md dark:bg-white/5 p-8">
         <h1 className="text-2xl font-semibold mb-6">오늘 하루를 기록하세요.</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
             <div>
               <label htmlFor="selectedDate" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">기록할 날짜</label>
               <input

@@ -73,7 +73,7 @@ export default function StepThreePage() {
   };
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12">
+    <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="rounded-3xl border border-white/15 bg-white/60 shadow-xl backdrop-blur-md dark:bg-white/5 p-8">
         <h2 className="text-xl font-semibold mb-6">내가 시도한 자기 달래기 방법</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">

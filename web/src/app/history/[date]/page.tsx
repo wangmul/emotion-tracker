@@ -45,7 +45,7 @@ export default function HistoryByDatePage() {
   const goNext = () => router.push(`/history/${format(addDays(targetDate, 1), "yyyy-MM-dd")}`);
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-10 space-y-6">
+    <main className="mx-auto w-full max-w-3xl px-4 py-8 space-y-6 sm:px-6 sm:py-10">
       <div className="rounded-3xl border border-white/15 bg-white/60 p-6 shadow-2xl backdrop-blur-md dark:bg-white/5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <h1 className="text-2xl font-semibold">{format(targetDate, "yyyy-MM-dd")}</h1>

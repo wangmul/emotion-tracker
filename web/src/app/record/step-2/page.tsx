@@ -131,11 +131,11 @@ export default function StepTwoPage() {
   };
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12">
+    <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12">
       <div className="rounded-3xl border border-white/15 bg-white/60 shadow-xl backdrop-blur-md dark:bg-white/5 p-8">
         <h2 className="text-xl font-semibold mb-6">당신이 하고 싶지 않지만 해야 하는 일 세가지</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             <input className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10" placeholder="예: 장보기" {...register("mustDo0")} />
             <input className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10" placeholder="예: 청구서 정리" {...register("mustDo1")} />
             <input className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10" placeholder="예: 운동하기" {...register("mustDo2")} />
@@ -143,7 +143,7 @@ export default function StepTwoPage() {
 
           <div>
             <h2 className="text-xl font-semibold mb-4">당신이 하고 싶었지만 하지 않은 일 세가지</h2>
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               <input className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10" placeholder="예: 친구에게 연락하기" {...register("wantSkip0")} />
               <input className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10" placeholder="예: 산책하기" {...register("wantSkip1")} />
               <input className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10" placeholder="예: 취미 활동" {...register("wantSkip2")} />

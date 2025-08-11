@@ -39,11 +39,11 @@ export default function RootLayout({
             <div className="absolute bottom-0 right-0 h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,_rgba(196,181,253,0.12)_0%,_transparent_65%)] blur-3xl" />
           </div>
           <header className="sticky top-0 z-10 backdrop-blur supports-[backdrop-filter]:bg-white/50 bg-white/70 dark:bg-black/30 border-b border-white/20">
-            <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+            <div className="mx-auto flex h-12 sm:h-14 max-w-5xl items-center justify-between px-3 sm:px-6">
               <a href="/" className="text-sm font-medium text-black/80 dark:text-white/90 hover:opacity-80 transition-opacity">
                 Emotion Tracker
               </a>
-              <nav className="flex items-center gap-3 text-sm">
+              <nav className="flex items-center gap-2 sm:gap-3 text-sm">
                 <a href="/record/step-1" className="rounded-md px-3 py-1.5 hover:bg-black/[.04] active:scale-[0.99] dark:hover:bg-white/10">기록하기</a>
                 <a href="/history" className="rounded-md px-3 py-1.5 hover:bg-black/[.04] active:scale-[0.99] dark:hover:bg-white/10">히스토리</a>
               </nav>

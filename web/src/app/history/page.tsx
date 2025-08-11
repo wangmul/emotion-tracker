@@ -62,7 +62,7 @@ export default function HistoryPage() {
   }, [entries]);
 
   return (
-    <main className="mx-auto max-w-4xl px-6 py-10 space-y-8">
+    <main className="mx-auto w-full max-w-4xl px-4 py-8 space-y-6 sm:px-6 sm:py-10 sm:space-y-8">
       <div className="rounded-3xl border border-white/15 bg-white/60 p-6 shadow-xl backdrop-blur-md dark:bg-white/5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="text-xl font-semibold">날짜별 보기</h2>
