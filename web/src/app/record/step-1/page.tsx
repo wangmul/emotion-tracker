@@ -25,6 +25,7 @@ export default function StepOnePage() {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -42,16 +43,17 @@ export default function StepOnePage() {
     router.push("/record/step-2");
   };
 
+  const selectedDate = watch("selectedDate");
+
   useEffect(() => {
-    // Prefill with today's existing entry if present
+    if (!selectedDate) return;
     (async () => {
       try {
         const supabase = getSupabase();
-        const today = format(new Date(), "yyyy-MM-dd");
         const { data } = await supabase
           .from("daily_entries")
           .select("said_no_count, asked_help_count, chose_for_joy_count, took_rest")
-          .eq("entry_date", today)
+          .eq("entry_date", selectedDate)
           .maybeSingle();
         if (data) {
           const v = data as {
@@ -60,22 +62,31 @@ export default function StepOnePage() {
             chose_for_joy_count: number;
             took_rest: boolean;
           };
-          // Apply to form and session
           const filled: FormData = {
             saidNoCount: v.said_no_count,
             askedHelpCount: v.asked_help_count,
             choseForJoyCount: v.chose_for_joy_count,
             tookRest: v.took_rest,
-            selectedDate: today,
+            selectedDate,
           };
           Object.entries(filled).forEach(([k, val]) => setValue(k as keyof FormData, val as never));
           saveStepOne(filled);
+        } else {
+          const cleared: FormData = {
+            saidNoCount: 0,
+            askedHelpCount: 0,
+            choseForJoyCount: 0,
+            tookRest: false,
+            selectedDate,
+          };
+          Object.entries(cleared).forEach(([k, val]) => setValue(k as keyof FormData, val as never));
+          saveStepOne(cleared);
         }
       } catch {
         // ignore
       }
     })();
-  }, [setValue]);
+  }, [selectedDate, setValue]);
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-12">
