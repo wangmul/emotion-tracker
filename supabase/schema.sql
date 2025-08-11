@@ -25,6 +25,9 @@ alter table if exists public.daily_entries
 alter table if exists public.daily_entries
   add column if not exists did_exercise boolean not null default false;
 
+alter table if exists public.daily_entries
+  add column if not exists self_soothing_methods text;
+
 -- Unique per user per day (null user_id allows duplicates, OK for single-user v1)
 create unique index if not exists daily_entries_user_day_uniq
   on public.daily_entries (user_id, entry_date);

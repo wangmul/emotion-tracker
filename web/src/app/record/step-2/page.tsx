@@ -120,9 +120,9 @@ export default function StepTwoPage() {
         targetDate = inserted?.entry_date ?? entryDate;
       }
 
-      clearStepOne();
+      // 다음 단계에서 추가 메모를 입력하도록 이동
       const target = targetDate;
-      router.push(`/history/${target}`);
+      router.push(`/record/step-3`);
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다.";
       setError(message);
@@ -174,7 +174,7 @@ export default function StepTwoPage() {
               disabled={submitting}
               className="flex-1 rounded-xl bg-foreground/90 text-background px-6 py-3 font-semibold shadow hover:shadow-lg transition-all active:scale-[0.99] disabled:opacity-60"
             >
-              {submitting ? "기록 중..." : "기록하기"}
+              {submitting ? "다음으로..." : "다음으로"}
             </button>
           </div>
         </form>

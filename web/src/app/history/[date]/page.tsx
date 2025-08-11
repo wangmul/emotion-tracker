@@ -115,6 +115,13 @@ export default function HistoryByDatePage() {
                 </ul>
               </div>
             </div>
+
+          <div className="rounded-2xl border border-white/15 bg-white/70 p-5 dark:bg-white/10">
+            <p className="font-medium mb-2">내가 시도한 자기 달래기 방법</p>
+            <p className="text-sm opacity-90 whitespace-pre-wrap">
+              {entry.self_soothing_methods || "-"}
+            </p>
+          </div>
           </div>
         ) : (
           <div className="flex items-center justify-between gap-4">

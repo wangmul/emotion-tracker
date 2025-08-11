@@ -12,4 +12,5 @@ export type DailyEntry = {
   wanted_but_skipped_tasks: string[]; // length 3
   created_at?: string;
   updated_at?: string;
+  self_soothing_methods?: string | null;
 };
