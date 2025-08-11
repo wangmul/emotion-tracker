@@ -16,8 +16,8 @@ const schema = z.object({
   choseForJoyCount: z.number().int().min(0),
   tookRest: z.boolean(),
   selectedDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
-  didCook: z.boolean().default(false),
-  didExercise: z.boolean().default(false),
+  didCook: z.boolean(),
+  didExercise: z.boolean(),
 });
 
 type FormData = z.infer<typeof schema>;
