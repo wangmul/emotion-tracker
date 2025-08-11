@@ -31,6 +31,7 @@ export default function StepTwoPage() {
   const {
     register,
     handleSubmit,
+    setValue,
   } = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
