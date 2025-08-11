@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loadStepOne, clearStepOne } from "@/lib/storage";
+import { loadStepOne } from "@/lib/storage";
 import { getSupabase } from "@/lib/supabase/client";
 import type { DailyEntry } from "@/types/dailyEntry";
 import { format } from "date-fns";

@@ -1,5 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import HistoryPage from "./page";
+import type { DailyEntry } from "@/types/dailyEntry";
 
 import { createSupabaseMock } from "@/test/mocks/supabase";
 vi.mock("@/lib/supabase/client", () => {
@@ -18,7 +19,7 @@ describe("HistoryPage", () => {
   });
 
   it("renders cards when data exists", async () => {
-    const sample: any[] = [
+    const sample: DailyEntry[] = [
       {
         id: "1",
         entry_date: "2025-01-02",
@@ -31,9 +32,11 @@ describe("HistoryPage", () => {
       },
     ];
 
-    const mod: any = await vi.importMock("@/lib/supabase/client");
+    const mod = (await vi.importMock("@/lib/supabase/client")) as {
+      getSupabase: ReturnType<typeof vi.fn> & (() => unknown);
+    };
     mod.getSupabase.mockReturnValueOnce(
-      createSupabaseMock({ selectResult: { data: sample as any, error: null } })
+      createSupabaseMock({ selectResult: { data: sample, error: null } })
     );
 
     render(<HistoryPage />);

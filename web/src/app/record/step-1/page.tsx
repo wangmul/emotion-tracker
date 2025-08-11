@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -200,18 +201,18 @@ export default function StepOnePage() {
               다음으로
             </button>
             <div className="mt-3 grid grid-cols-2 gap-3">
-              <a
+              <Link
                 href="/"
                 className="rounded-xl border border-black/10 px-6 py-3 text-center font-medium hover:bg-black/[.04] active:scale-[0.99] dark:border-white/15 dark:hover:bg-white/10"
               >
                 홈으로
-              </a>
-              <a
+              </Link>
+              <Link
                 href="/history"
                 className="rounded-xl border border-black/10 px-6 py-3 text-center font-medium hover:bg-black/[.04] active:scale-[0.99] dark:border-white/15 dark:hover:bg-white/10"
               >
                 히스토리
-              </a>
+              </Link>
             </div>
           </div>
         </form>
