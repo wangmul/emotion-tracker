@@ -50,6 +50,37 @@ export default function StepTwoPage() {
     }
   }, [router]);
 
+  // Prefill with existing values for the selected date
+  useEffect(() => {
+    (async () => {
+      try {
+        const stepOne = loadStepOne();
+        const today = format(new Date(), "yyyy-MM-dd");
+        const entryDate = stepOne?.selectedDate ?? today;
+        const supabase = getSupabase();
+        const { data } = await supabase
+          .from("daily_entries")
+          .select("must_do_tasks, wanted_but_skipped_tasks")
+          .eq("entry_date", entryDate)
+          .is("user_id", null)
+          .maybeSingle();
+        if (data) {
+          const v = data as Pick<DailyEntry, "must_do_tasks" | "wanted_but_skipped_tasks">;
+          const md = v.must_do_tasks || ["", "", ""];
+          const ws = v.wanted_but_skipped_tasks || ["", "", ""];
+          setValue("mustDo0", md[0] ?? "");
+          setValue("mustDo1", md[1] ?? "");
+          setValue("mustDo2", md[2] ?? "");
+          setValue("wantSkip0", ws[0] ?? "");
+          setValue("wantSkip1", ws[1] ?? "");
+          setValue("wantSkip2", ws[2] ?? "");
+        }
+      } catch {
+        // ignore
+      }
+    })();
+  }, [setValue]);
+
   const onSubmit = async (data: FormData) => {
     const stepOne = loadStepOne();
     if (!stepOne) return;
@@ -121,7 +152,6 @@ export default function StepTwoPage() {
       }
 
       // 다음 단계에서 추가 메모를 입력하도록 이동
-      const target = targetDate;
       router.push(`/record/step-3`);
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다.";

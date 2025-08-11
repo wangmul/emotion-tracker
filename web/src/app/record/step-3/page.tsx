@@ -38,7 +38,9 @@ export default function StepThreePage() {
           .eq("entry_date", entryDate)
           .is("user_id", null)
           .maybeSingle();
-        if (data?.self_soothing_methods) setValue("methods", data.self_soothing_methods);
+        if (data?.self_soothing_methods !== undefined && data?.self_soothing_methods !== null) {
+          setValue("methods", data.self_soothing_methods);
+        }
       } catch {}
     })();
   }, [setValue]);
