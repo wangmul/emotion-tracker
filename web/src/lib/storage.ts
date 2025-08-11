@@ -3,6 +3,7 @@ export type StepOneData = {
   askedHelpCount: number;
   choseForJoyCount: number;
   tookRest: boolean;
+  selectedDate?: string; // YYYY-MM-DD
 };
 
 const STEP1_KEY = "emotionTracker.step1";

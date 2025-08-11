@@ -57,9 +57,10 @@ export default function StepTwoPage() {
     setSubmitting(true);
     setError(null);
     const today = format(new Date(), "yyyy-MM-dd");
+    const entryDate = stepOne.selectedDate ?? today;
 
     const payload: DailyEntry = {
-      entry_date: today,
+      entry_date: entryDate,
       said_no_count: stepOne.saidNoCount,
       asked_help_count: stepOne.askedHelpCount,
       chose_for_joy_count: stepOne.choseForJoyCount,
@@ -88,7 +89,7 @@ export default function StepTwoPage() {
       }
 
       clearStepOne();
-      const target = upserted?.entry_date ?? today;
+      const target = upserted?.entry_date ?? entryDate;
       router.push(`/history/${target}`);
     } catch (e: unknown) {
       const message = e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다.";

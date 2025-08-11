@@ -14,6 +14,7 @@ const schema = z.object({
   askedHelpCount: z.number().int().min(0),
   choseForJoyCount: z.number().int().min(0),
   tookRest: z.boolean(),
+  selectedDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -31,6 +32,7 @@ export default function StepOnePage() {
       askedHelpCount: 0,
       choseForJoyCount: 0,
       tookRest: false,
+      selectedDate: format(new Date(), "yyyy-MM-dd"),
     },
   });
 
@@ -63,6 +65,7 @@ export default function StepOnePage() {
             askedHelpCount: v.asked_help_count,
             choseForJoyCount: v.chose_for_joy_count,
             tookRest: v.took_rest,
+            selectedDate: today,
           };
           Object.entries(filled).forEach(([k, val]) => setValue(k as keyof FormData, val as never));
           saveStepOne(filled);
@@ -79,6 +82,15 @@ export default function StepOnePage() {
         <h1 className="text-2xl font-semibold mb-6">오늘 하루를 기록하세요.</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <label htmlFor="selectedDate" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">기록할 날짜</label>
+              <input
+                id="selectedDate"
+                type="date"
+                className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
+                {...register("selectedDate")}
+              />
+            </div>
             <div>
               <label htmlFor="saidNoCount" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">아니라고 말 한 횟수</label>
               <input
