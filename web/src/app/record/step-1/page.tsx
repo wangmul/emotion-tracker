@@ -114,7 +114,7 @@ export default function StepOnePage() {
               <input
                 id="selectedDate"
                 type="date"
-                className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
+                className="h-12 w-full rounded-xl border border-black/10 bg-white/80 px-4 py-0 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
                 {...register("selectedDate")}
               />
             </div>
@@ -125,7 +125,7 @@ export default function StepOnePage() {
                 type="number"
                 inputMode="numeric"
                 min={0}
-                className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
+                className="h-12 w-full rounded-xl border border-black/10 bg-white/80 px-4 py-0 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
                 {...register("saidNoCount", { valueAsNumber: true })}
               />
               {errors.saidNoCount && (
@@ -139,7 +139,7 @@ export default function StepOnePage() {
                 type="number"
                 inputMode="numeric"
                 min={0}
-                className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
+                className="h-12 w-full rounded-xl border border-black/10 bg-white/80 px-4 py-0 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
                 {...register("askedHelpCount", { valueAsNumber: true })}
               />
               {errors.askedHelpCount && (
@@ -153,7 +153,7 @@ export default function StepOnePage() {
                 type="number"
                 inputMode="numeric"
                 min={0}
-                className="w-full rounded-xl border border-black/10 bg-white/80 px-4 py-3 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
+                className="h-12 w-full rounded-xl border border-black/10 bg-white/80 px-4 py-0 outline-none ring-0 focus:border-black/30 focus:ring-2 focus:ring-[#94a3b8]/30 dark:border-white/15 dark:bg-white/10"
                 {...register("choseForJoyCount", { valueAsNumber: true })}
               />
               {errors.choseForJoyCount && (

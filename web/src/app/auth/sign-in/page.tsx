@@ -63,7 +63,13 @@ export default function SignInPage() {
         options: { emailRedirectTo: redirect },
       });
       if (err) setError(err.message);
-      else setMessage("가입 완료. 메일 인증이 필요한 경우 메일함을 확인하세요.");
+      else {
+        setMessage("가입 완료. 메일 인증이 필요한 경우 메일함을 확인하세요.");
+        // 가입 직후 이메일 로그인 탭으로 전환
+        setMode("signin");
+        // 보안상 비밀번호는 비웁니다
+        setPassword("");
+      }
     } catch (e: unknown) {
       setError(e instanceof Error ? e.message : "알 수 없는 오류가 발생했습니다.");
     } finally {
