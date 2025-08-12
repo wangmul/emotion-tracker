@@ -13,9 +13,8 @@ vi.mock("@/lib/supabase/client", () => {
 describe("HistoryPage", () => {
   it("shows empty state when no data", async () => {
     render(<HistoryPage />);
-    await waitFor(() => {
-      expect(screen.getByText(/아직 데이터가 없습니다/)).toBeInTheDocument();
-    });
+    await screen.findByText("히스토리");
+    expect(screen.getByText(/아직 데이터가 없습니다/)).toBeInTheDocument();
   });
 
   it("renders cards when data exists", async () => {
@@ -41,8 +40,8 @@ describe("HistoryPage", () => {
 
     render(<HistoryPage />);
 
+    await screen.findByText("히스토리");
     await waitFor(() => {
-      expect(screen.getByText("2025-01-02")).toBeInTheDocument();
       expect(screen.getByText("2025-01-02")).toBeInTheDocument();
     });
   });

@@ -8,8 +8,7 @@ vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 describe("StepOnePage", () => {
   it("renders labels and submits with default zero values", async () => {
     render(<StepOnePage />);
-
-    expect(screen.getByText("오늘 하루를 기록하세요.")).toBeInTheDocument();
+    await screen.findByText("오늘 하루를 기록하세요.");
     expect(screen.getByLabelText("아니라고 말 한 횟수")).toBeInTheDocument();
     expect(screen.getByLabelText("도움을 요청한 횟수")).toBeInTheDocument();
     expect(screen.getByLabelText("즐거움을 위해 선택한 횟수")).toBeInTheDocument();
