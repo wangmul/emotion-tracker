@@ -41,9 +41,10 @@ describe("StepTwoPage", () => {
   });
 
   it("shows error message when insert fails", async () => {
-    // Fail once
-    const failingInsert = vi.fn().mockReturnValue({ select: () => ({ single: () => Promise.resolve({ data: null, error: { message: "insert failed" } }) }) });
-    fromMock.mockReturnValueOnce({ select: () => chainSelect, insert: failingInsert });
+    // Make the next insert call fail
+    insertMock.mockReturnValueOnce({
+      select: () => ({ single: () => Promise.resolve({ data: null, error: { message: "insert failed" } }) }),
+    });
 
     render(<StepTwoPage />);
     await screen.findByText("당신이 하고 싶지 않지만 해야 하는 일 세가지");
@@ -54,8 +55,6 @@ describe("StepTwoPage", () => {
     await userEvent.type(screen.getByPlaceholderText("예: 산책하기"), "산책하기");
     await userEvent.type(screen.getByPlaceholderText("예: 취미 활동"), "취미 활동");
     await userEvent.click(screen.getByRole("button", { name: "다음으로" }));
-    await waitFor(async () => {
-      expect(await screen.findByText("insert failed")).toBeInTheDocument();
-    });
+    expect(await screen.findByText("insert failed")).toBeInTheDocument();
   });
 });
