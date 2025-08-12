@@ -2,23 +2,29 @@
 
 import { useEffect, useState } from "react";
 import { getSupabase } from "@/lib/supabase/client";
+import { useRequireAuth } from "@/lib/auth";
+
+type Item = { id: string; content: string; created_at: string };
 
 export default function SoothingLibraryPage() {
-  const [items, setItems] = useState<{ id: string; content: string; created_at: string }[]>([]);
+  const { userId, loading } = useRequireAuth();
+  const [items, setItems] = useState<Item[]>([]);
   const [text, setText] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     (async () => {
+      if (!userId) return;
       const supabase = getSupabase();
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from("self_soothing_methods")
         .select("id, content, created_at")
+        .eq("user_id", userId)
         .order("created_at", { ascending: false })
         .limit(100);
-      setItems((data as any) || []);
+      if (!error && data) setItems(data as Item[]);
     })();
-  }, []);
+  }, [userId]);
 
   const addItem = async () => {
     setError(null);
@@ -33,9 +39,11 @@ export default function SoothingLibraryPage() {
       setError(error.message);
       return;
     }
-    setItems((prev) => [{ ...(data as any) }, ...prev]);
+    if (data) setItems((prev) => [data as Item, ...prev]);
     setText("");
   };
+
+  if (loading) return null;
 
   return (
     <main className="mx-auto w-full max-w-2xl px-4 py-8 sm:px-6 sm:py-12 space-y-6">

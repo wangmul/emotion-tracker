@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { getSupabase } from "@/lib/supabase/client";
+import { useRequireAuth } from "@/lib/auth";
 import type { DailyEntry } from "@/types/dailyEntry";
 import { Line } from "react-chartjs-2";
 import {
@@ -19,20 +20,23 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip,
 export const dynamic = "force-dynamic";
 
 export default function HistoryPage() {
+  const { userId, loading } = useRequireAuth();
   const [entries, setEntries] = useState<DailyEntry[]>([]);
   const [jumpDate, setJumpDate] = useState<string>("");
 
   useEffect(() => {
     (async () => {
+      if (!userId) return;
       const supabase = getSupabase();
       const { data, error } = await supabase
         .from("daily_entries")
         .select("*")
+        .eq("user_id", userId)
         .order("entry_date", { ascending: true })
         .limit(60);
       if (!error && data) setEntries(data as DailyEntry[]);
     })();
-  }, []);
+  }, [userId]);
 
   const chartData = useMemo(() => {
     const labels = entries.map((e) => e.entry_date);
@@ -61,6 +65,7 @@ export default function HistoryPage() {
     };
   }, [entries]);
 
+  if (loading) return null;
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-8 space-y-6 sm:px-6 sm:py-10 sm:space-y-8">
       <div className="rounded-3xl border border-white/15 bg-white/60 p-6 shadow-xl backdrop-blur-md dark:bg-white/5">
