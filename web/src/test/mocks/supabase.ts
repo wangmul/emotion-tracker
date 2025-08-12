@@ -7,19 +7,27 @@ export function createSupabaseMock<T>(opts: {
   insertResult?: InsertResult;
 }) {
   const { selectResult, insertResult } = opts;
+
+  const chainSelect = {
+    eq() {
+      return chainSelect;
+    },
+    order() {
+      return chainSelect;
+    },
+    limit() {
+      return Promise.resolve(selectResult ?? { data: [] as unknown as T, error: null });
+    },
+    maybeSingle() {
+      return Promise.resolve(selectResult ?? { data: null as unknown as T, error: null } as SelectResult<T>);
+    },
+  };
+
   return {
     from() {
       return {
         select() {
-          return {
-            order() {
-              return {
-                limit() {
-                  return Promise.resolve(selectResult ?? { data: [] as unknown as T, error: null });
-                },
-              };
-            },
-          };
+          return chainSelect;
         },
         insert() {
           return {

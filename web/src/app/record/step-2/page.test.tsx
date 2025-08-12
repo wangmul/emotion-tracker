@@ -34,7 +34,7 @@ describe("StepTwoPage", () => {
     await userEvent.type(screen.getByPlaceholderText("예: 산책하기"), "산책하기");
     await userEvent.type(screen.getByPlaceholderText("예: 취미 활동"), "취미 활동");
 
-    await userEvent.click(screen.getByRole("button", { name: "기록하기" }));
+    await userEvent.click(screen.getByRole("button", { name: "다음으로" }));
 
     await waitFor(() => expect(insertMock).toHaveBeenCalled());
   });
@@ -52,7 +52,7 @@ describe("StepTwoPage", () => {
     await userEvent.type(screen.getByPlaceholderText("예: 친구에게 연락하기"), "친구에게 연락하기");
     await userEvent.type(screen.getByPlaceholderText("예: 산책하기"), "산책하기");
     await userEvent.type(screen.getByPlaceholderText("예: 취미 활동"), "취미 활동");
-    await userEvent.click(screen.getByRole("button", { name: "기록하기" }));
+    await userEvent.click(screen.getByRole("button", { name: "다음으로" }));
     await waitFor(async () => {
       expect(await screen.findByText("insert failed")).toBeInTheDocument();
     });
