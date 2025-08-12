@@ -12,10 +12,11 @@ vi.mock("@/lib/storage", () => ({
   clearStepOne: vi.fn(),
 }));
 
-// Mock Supabase insert chain
+// Mock Supabase: handle existence check + insert chain
 const insertResponse = { data: { entry_date: "2025-01-02" }, error: null } as const;
 const insertMock = vi.fn().mockReturnValue({ select: () => ({ single: () => Promise.resolve(insertResponse) }) });
-const fromMock = vi.fn().mockReturnValue({ insert: insertMock });
+const chainSelect = { eq: () => ({ eq: () => ({ maybeSingle: () => Promise.resolve({ data: null, error: null }) }) }) };
+const fromMock = vi.fn().mockReturnValue({ select: () => chainSelect, insert: insertMock });
 vi.mock("@/lib/supabase/client", () => ({
   getSupabase: vi.fn(() => ({ from: fromMock })),
 }));
@@ -42,7 +43,7 @@ describe("StepTwoPage", () => {
   it("shows error message when insert fails", async () => {
     // Fail once
     const failingInsert = vi.fn().mockReturnValue({ select: () => ({ single: () => Promise.resolve({ data: null, error: { message: "insert failed" } }) }) });
-    fromMock.mockReturnValueOnce({ insert: failingInsert });
+    fromMock.mockReturnValueOnce({ select: () => chainSelect, insert: failingInsert });
 
     render(<StepTwoPage />);
     await screen.findByText("당신이 하고 싶지 않지만 해야 하는 일 세가지");
