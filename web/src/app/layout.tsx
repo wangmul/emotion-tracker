@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Geist, Geist_Mono, Noto_Sans_KR } from "next/font/google";
+import { Geist, Geist_Mono, Noto_Sans_KR, Black_Han_Sans, Jua } from "next/font/google";
 import AuthListener from "@/components/auth/AuthListener";
 import "./globals.css";
 
@@ -20,6 +20,18 @@ const notoSansKr = Noto_Sans_KR({
   weight: ["300", "400", "500", "700"],
 });
 
+const blackHanSans = Black_Han_Sans({
+  variable: "--font-display",
+  weight: "400",
+  subsets: ["latin"],
+});
+
+const jua = Jua({
+  variable: "--font-body",
+  weight: "400",
+  subsets: ["latin"],
+});
+
 export const metadata: Metadata = {
   title: "Emotion Tracker",
   description: "오늘 하루의 감정과 선택을 예쁘게 기록하세요.",
@@ -33,7 +45,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${notoSansKr.variable} antialiased min-h-dvh`}
+        className={`${geistSans.variable} ${geistMono.variable} ${notoSansKr.variable} ${blackHanSans.variable} ${jua.variable} antialiased min-h-dvh`}
       >
         <div className="relative min-h-dvh">
           <div className="pointer-events-none absolute inset-0 -z-10">
