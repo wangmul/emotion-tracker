@@ -3,10 +3,11 @@
 import { useMemo, useState } from "react";
 import { getSupabase } from "@/lib/supabase/client";
 
+export const dynamic = "force-dynamic";
+
 type Mode = "magic" | "signin" | "signup";
 
 export default function SignInPage() {
-  const supabase = getSupabase();
   const [mode, setMode] = useState<Mode>("magic");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,6 +25,7 @@ export default function SignInPage() {
     resetState();
     setLoading(true);
     try {
+      const supabase = getSupabase();
       const redirect = typeof window !== "undefined" ? window.location.origin : undefined;
       const { error: err } = await supabase.auth.signInWithOtp({
         email,
@@ -42,6 +44,7 @@ export default function SignInPage() {
     resetState();
     setLoading(true);
     try {
+      const supabase = getSupabase();
       const { error: err } = await supabase.auth.signInWithPassword({ email, password });
       if (err) setError(err.message);
       else setMessage("로그인되었습니다.");
@@ -56,6 +59,7 @@ export default function SignInPage() {
     resetState();
     setLoading(true);
     try {
+      const supabase = getSupabase();
       const redirect = typeof window !== "undefined" ? window.location.origin : undefined;
       const { error: err } = await supabase.auth.signUp({
         email,
