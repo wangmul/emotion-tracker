@@ -33,7 +33,7 @@ export default function SoothingLibraryPage() {
     const supabase = getSupabase();
     const { data, error } = await supabase
       .from("self_soothing_methods")
-      .insert({ content: trimmed })
+      .insert({ content: trimmed, user_id: userId ?? undefined })
       .select("id, content, created_at").single();
     if (error) {
       setError(error.message);

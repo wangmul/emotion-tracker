@@ -64,9 +64,8 @@ export default function StepThreePage() {
           .from("self_soothing_methods")
           .insert({ content: trimmed, user_id: userId ?? undefined });
         if (insertErr) {
+          // 달래기 모음 저장 실패해도 일일 기록 동기화는 계속 진행
           setError(insertErr.message);
-          setSubmitting(false);
-          return;
         }
       }
 
