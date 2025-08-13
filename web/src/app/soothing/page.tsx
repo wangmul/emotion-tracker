@@ -80,6 +80,34 @@ export default function SoothingLibraryPage() {
     setText("");
   };
 
+  const deleteItem = async (item: Item) => {
+    if (!userId) return;
+    setError(null);
+    const supabase = getSupabase();
+    try {
+      if (item.id.startsWith("daily-")) {
+        const entryDate = item.id.replace("daily-", "");
+        const { error } = await supabase
+          .from("daily_entries")
+          .update({ self_soothing_methods: null })
+          .eq("user_id", userId)
+          .eq("entry_date", entryDate)
+          .single();
+        if (error) throw error;
+      } else {
+        const { error } = await supabase
+          .from("self_soothing_methods")
+          .delete()
+          .eq("id", item.id)
+          .eq("user_id", userId);
+        if (error) throw error;
+      }
+      setItems((prev) => prev.filter((it) => it.id !== item.id));
+    } catch (e: any) {
+      setError(e?.message ?? "삭제에 실패했습니다.");
+    }
+  };
+
   if (loading) return null;
 
   return (
@@ -100,8 +128,15 @@ export default function SoothingLibraryPage() {
 
       <div className="space-y-2">
         {items.map((it) => (
-          <div key={it.id} className="rounded-2xl border border-white/15 bg-white/60 p-4 shadow-xl backdrop-blur-md dark:bg-white/5">
-            <p className="text-sm whitespace-pre-wrap">{it.content}</p>
+          <div key={it.id} className="rounded-2xl border border-white/15 bg-white/60 p-4 shadow-xl backdrop-blur-md dark:bg-white/5 flex items-start justify-between gap-3">
+            <p className="text-sm whitespace-pre-wrap flex-1">{it.content}</p>
+            <button
+              onClick={() => deleteItem(it)}
+              className="rounded-lg border border-black/10 px-3 py-1.5 text-xs text-black/70 hover:bg-black/[.04] active:scale-[0.99] dark:border-white/15 dark:text-white/80 dark:hover:bg-white/10"
+              aria-label="삭제"
+            >
+              삭제
+            </button>
           </div>
         ))}
         {items.length === 0 && (
