@@ -18,7 +18,7 @@ type FormData = z.infer<typeof schema>;
 
 export default function StepThreePage() {
   const router = useRouter();
-  const { loading } = useRequireAuth();
+  const { userId, loading } = useRequireAuth();
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,7 +38,7 @@ export default function StepThreePage() {
           .from("daily_entries")
           .select("self_soothing_methods")
           .eq("entry_date", entryDate)
-          .is("user_id", null)
+          .eq("user_id", userId ?? "")
           .maybeSingle();
         if (data?.self_soothing_methods !== undefined && data?.self_soothing_methods !== null) {
           setValue("methods", data.self_soothing_methods);
@@ -62,7 +62,7 @@ export default function StepThreePage() {
       if (trimmed.length > 0) {
         const { error: insertErr } = await supabase
           .from("self_soothing_methods")
-          .insert({ content: trimmed });
+          .insert({ content: trimmed, user_id: userId ?? undefined });
         if (insertErr) {
           setError(insertErr.message);
           setSubmitting(false);
@@ -75,7 +75,7 @@ export default function StepThreePage() {
         .from("daily_entries")
         .update({ self_soothing_methods: trimmed })
         .eq("entry_date", entryDate)
-        .is("user_id", null);
+        .eq("user_id", userId ?? "");
       if (updateErr) {
         setError(updateErr.message);
         setSubmitting(false);

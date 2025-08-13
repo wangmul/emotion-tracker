@@ -30,9 +30,23 @@ body {
     linear-gradient(180deg, rgba(2,6,12,0.02), transparent 20%),
     var(--background);
   color: var(--foreground);
-  font-family: var(--font-body), var(--font-noto-sans-kr), var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-gmarket-sans, 'Gmarket Sans', 'GmarketSans', 'GmarketSansMedium'), var(--font-noto-sans-kr), var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
 
-h1, h2, .font-display {
-  font-family: var(--font-display), var(--font-body), sans-serif;
+h1, h2, .font-display { font-family: var(--font-gmarket-sans, 'Gmarket Sans Bold'), sans-serif; }
+
+@font-face {
+  font-family: 'Gmarket Sans';
+  src: local('Gmarket Sans Medium'), local('GmarketSansMedium'), url('/fonts/GmarketSansMedium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gmarket Sans Bold';
+  src: local('Gmarket Sans Bold'), local('GmarketSansBold'), url('/fonts/GmarketSansBold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
 }
