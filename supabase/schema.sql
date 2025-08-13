@@ -51,6 +51,21 @@ begin
   end if;
 end$$;
 
+-- Auto set user_id on insert when null (ensures linkage from clients that omit user_id)
+create or replace function public.set_user_id_ssm()
+returns trigger language plpgsql as $$
+begin
+  if new.user_id is null then
+    new.user_id = auth.uid();
+  end if;
+  return new;
+end;$$;
+
+drop trigger if exists set_user_id_ssm on public.self_soothing_methods;
+create trigger set_user_id_ssm
+before insert on public.self_soothing_methods
+for each row execute procedure public.set_user_id_ssm();
+
 do $$
 begin
   if not exists (
@@ -111,6 +126,21 @@ drop trigger if exists set_updated_at on public.daily_entries;
 create trigger set_updated_at
 before update on public.daily_entries
 for each row execute procedure public.set_updated_at();
+
+-- Auto set user_id on insert for daily entries when null
+create or replace function public.set_user_id_daily_entries()
+returns trigger language plpgsql as $$
+begin
+  if new.user_id is null then
+    new.user_id = auth.uid();
+  end if;
+  return new;
+end;$$;
+
+drop trigger if exists set_user_id_daily_entries on public.daily_entries;
+create trigger set_user_id_daily_entries
+before insert on public.daily_entries
+for each row execute procedure public.set_user_id_daily_entries();
 
 alter table public.daily_entries enable row level security;
 

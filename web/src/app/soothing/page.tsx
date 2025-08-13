@@ -16,13 +16,50 @@ export default function SoothingLibraryPage() {
     (async () => {
       if (!userId) return;
       const supabase = getSupabase();
-      const { data, error } = await supabase
-        .from("self_soothing_methods")
-        .select("id, content, created_at")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false })
-        .limit(100);
-      if (!error && data) setItems(data as Item[]);
+
+      const [ssmRes, dailyRes] = await Promise.all([
+        supabase
+          .from("self_soothing_methods")
+          .select("id, content, created_at")
+          .eq("user_id", userId)
+          .order("created_at", { ascending: false })
+          .limit(100),
+        supabase
+          .from("daily_entries")
+          .select("self_soothing_methods, entry_date")
+          .eq("user_id", userId)
+          .not("self_soothing_methods", "is", null)
+          .order("entry_date", { ascending: false })
+          .limit(100),
+      ]);
+
+      const combined: Item[] = [];
+      if (!ssmRes.error && ssmRes.data) {
+        combined.push(...(ssmRes.data as Item[]));
+      }
+      if (!dailyRes.error && dailyRes.data) {
+        const fromDaily: Item[] = (dailyRes.data as any[])
+          .filter((r) => !!r.self_soothing_methods)
+          .map((r) => ({
+            id: `daily-${r.entry_date}`,
+            content: String(r.self_soothing_methods),
+            created_at: new Date(r.entry_date).toISOString(),
+          }));
+        combined.push(...fromDaily);
+      }
+
+      // 간단한 중복 제거: content 기준
+      const seen = new Set<string>();
+      const deduped = combined.filter((it) => {
+        const key = it.content.trim();
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+
+      // 최신순 정렬
+      deduped.sort((a, b) => (a.created_at < b.created_at ? 1 : -1));
+      setItems(deduped);
     })();
   }, [userId]);
 
