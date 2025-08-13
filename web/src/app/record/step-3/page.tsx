@@ -45,7 +45,7 @@ export default function StepThreePage() {
         }
       } catch {}
     })();
-  }, [setValue]);
+  }, [setValue, userId]);
 
   const onSubmit = async (data: FormData) => {
     const stepOne = loadStepOne();
@@ -70,16 +70,54 @@ export default function StepThreePage() {
         }
       }
 
-      // 2) 해당 날짜 레코드에도 마지막 메모로 동기화(선택 사항이지만 유지)
-      const { error: updateErr } = await supabase
+      // 2) 해당 날짜 레코드 동기화: 없으면 생성, 있으면 갱신
+      const { data: existing, error: selErr } = await supabase
         .from("daily_entries")
-        .update({ self_soothing_methods: trimmed })
+        .select("id")
         .eq("entry_date", entryDate)
-        .eq("user_id", userId ?? "");
-      if (updateErr) {
-        setError(updateErr.message);
+        .eq("user_id", userId ?? "")
+        .maybeSingle();
+      if (selErr) {
+        setError(selErr.message);
         setSubmitting(false);
         return;
+      }
+
+      if (existing?.id) {
+        const { error: updateErr } = await supabase
+          .from("daily_entries")
+          .update({ self_soothing_methods: trimmed })
+          .eq("id", existing.id);
+        if (updateErr) {
+          setError(updateErr.message);
+          setSubmitting(false);
+          return;
+        }
+      } else {
+        const stepDefaults = {
+          said_no_count: stepOne?.saidNoCount ?? 0,
+          asked_help_count: stepOne?.askedHelpCount ?? 0,
+          chose_for_joy_count: stepOne?.choseForJoyCount ?? 0,
+          took_rest: stepOne?.tookRest ?? false,
+          did_cook: stepOne?.didCook ?? false,
+          did_exercise: stepOne?.didExercise ?? false,
+          must_do_tasks: ["", "", ""],
+          wanted_but_skipped_tasks: ["", "", ""],
+        };
+        const { error: insErr } = await supabase
+          .from("daily_entries")
+          .insert({
+            entry_date: entryDate,
+            user_id: userId ?? undefined,
+            self_soothing_methods: trimmed,
+            ...stepDefaults,
+          })
+          .single();
+        if (insErr) {
+          setError(insErr.message);
+          setSubmitting(false);
+          return;
+        }
       }
       clearStepOne();
       router.push(`/history/${entryDate}`);
