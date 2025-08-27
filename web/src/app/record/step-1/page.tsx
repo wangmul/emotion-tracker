@@ -119,7 +119,7 @@ export default function StepOnePage() {
               />
             </div>
             <div>
-              <label htmlFor="saidNoCount" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">아니라고 말 한 횟수</label>
+              <label htmlFor="saidNoCount" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">싫은 것은 싫다고 한 횟수</label>
               <input
                 id="saidNoCount"
                 type="number"
@@ -133,7 +133,7 @@ export default function StepOnePage() {
               )}
             </div>
             <div>
-              <label htmlFor="askedHelpCount" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">도움을 요청한 횟수</label>
+              <label htmlFor="askedHelpCount" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">도와달라고 요청한 횟수</label>
               <input
                 id="askedHelpCount"
                 type="number"
@@ -147,7 +147,7 @@ export default function StepOnePage() {
               )}
             </div>
             <div>
-              <label htmlFor="choseForJoyCount" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">즐거움을 위해 선택한 횟수</label>
+              <label htmlFor="choseForJoyCount" className="block text-sm font-medium mb-2 text-black/80 dark:text-white/85">재미만을 위해 선택한 횟수</label>
               <input
                 id="choseForJoyCount"
                 type="number"

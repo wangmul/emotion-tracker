@@ -27,7 +27,7 @@ describe("StepTwoPage", () => {
     render(<StepTwoPage />);
 
     // Fill all inputs to satisfy schema
-    await screen.findByText("당신이 하고 싶지 않지만 해야 하는 일 세가지");
+    await screen.findByText("하고 싶지 않은데 했던 것 세가지");
     await userEvent.type(screen.getByPlaceholderText("예: 장보기"), "장보기");
     await userEvent.type(screen.getByPlaceholderText("예: 청구서 정리"), "청구서 정리");
     await userEvent.type(screen.getByPlaceholderText("예: 운동하기"), "운동하기");
@@ -47,7 +47,7 @@ describe("StepTwoPage", () => {
     });
 
     render(<StepTwoPage />);
-    await screen.findByText("당신이 하고 싶지 않지만 해야 하는 일 세가지");
+    await screen.findByText("하고 싶지 않은데 했던 것 세가지");
     await userEvent.type(screen.getByPlaceholderText("예: 장보기"), "장보기");
     await userEvent.type(screen.getByPlaceholderText("예: 청구서 정리"), "청구서 정리");
     await userEvent.type(screen.getByPlaceholderText("예: 운동하기"), "운동하기");
